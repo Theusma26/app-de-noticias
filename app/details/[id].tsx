@@ -1,4 +1,4 @@
-import useFavorites from "@/hooks/useFavorites";
+import { useFavoritesQuery } from "@/hooks/useFavoritesQuery";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ExternalPathString, Link, router, useLocalSearchParams } from "expo-router";
 import React from "react";
@@ -15,26 +15,34 @@ const NewsDetails = () => {
       url: string;
     }>();
 
-  const { addFavorite, removeFavorite, isFavorite } = useFavorites();
+  const { favorites, addFavorite, removeFavorite } = useFavoritesQuery();
 
-  const favorite = isFavorite(url);
+  const isFavorite = url ? favorites.some((f) => f.url === url) : false;
 
   const handleFavoritePress = async () => {
     if (!url) return;
 
-    if (favorite) {
-      await removeFavorite(url);
+    try {
+      if (isFavorite) {
+        await removeFavorite(url);
+        Toast.show({
+          type: "info",
+          text1: "Notícia removida",
+          text2: "Foi removida dos seus favoritos.",
+        });
+      } else {
+        await addFavorite({ title, url, urlToImage, description, content });
+        Toast.show({
+          type: "success",
+          text1: "Notícia adicionada",
+          text2: "Foi adicionada aos seus favoritos.",
+        });
+      }
+    } catch {
       Toast.show({
-        type: "info",
-        text1: "Notícia removida",
-        text2: "Foi removida dos seus favoritos.",
-      });
-    } else {
-      await addFavorite({ title, url, urlToImage, description, content });
-      Toast.show({
-        type: "success",
-        text1: "Notícia adicionada",
-        text2: "Foi adicionada aos seus favoritos.",
+        type: "error",
+        text1: "Erro",
+        text2: "Não foi possível atualizar os favoritos.",
       });
     }
   };
@@ -58,9 +66,9 @@ const NewsDetails = () => {
               onPress={handleFavoritePress}
             >
               <MaterialIcons
-                name={favorite ? "favorite" : "favorite-border"}
+                name={isFavorite ? "favorite" : "favorite-border"}
                 size={32}
-                color={favorite ? "red" : "white"}
+                color={isFavorite ? "red" : "white"}
               />
             </TouchableOpacity>
           </View>
