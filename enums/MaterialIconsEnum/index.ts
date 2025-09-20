@@ -1,8 +1,8 @@
 export enum MaterialIconsEnum {
-    Business = "business",
-    Movie = "movie",
-    HealthAndSafety = "health-and-safety",
-    Science = "science",
-    Sports = "sports",
-    Computer = "computer",
+    BUSINESS = "business",
+    MOVIE = "movie",
+    HEALTH_AND_SAFETY = "health-and-safety",
+    SCIENCE = "science",
+    SPORTS = "sports",
+    COMPUTER = "computer",
 }
