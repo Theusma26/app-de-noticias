@@ -18,7 +18,7 @@ export default function TabLayout() {
                     borderRadius: 50,
                     marginHorizontal: 20,
                     marginBottom: 36,
-                    height: 56,
+                    height: 58,
                     position: "absolute",
                     overflow: "hidden",
                     borderWidth: 1,
@@ -31,6 +31,14 @@ export default function TabLayout() {
                     title: 'Home',
                     headerShown: false,
                     tabBarIcon: ({ color }) => <MaterialIcons name="home" size={28} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="categories/index"
+                options={{
+                    title: 'Categorias',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => <MaterialIcons name="category" size={28} color={color} />,
                 }}
             />
         </Tabs>

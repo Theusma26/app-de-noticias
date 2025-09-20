@@ -27,6 +27,12 @@ export default function RootLayout() {
                 headerShown: false,
               }}
             />
+            <Stack.Screen
+              name="newsByCategory/[newsByCategory]"
+              options={{
+                headerShown: false,
+              }}
+            />
           </Stack>
         </SafeAreaView>
       </SafeAreaProvider>
