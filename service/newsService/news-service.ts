@@ -2,7 +2,7 @@ import api from "../baseService/api";
 
 export async function getNewsByQuery(query: string, page = 1, pageSize = 10) {
     const response = await api.get(
-        `/everything?q=${query}&page=${page}&pageSize=${pageSize}&sortBy=publishedAt&apiKey=82c8808251bb49809961de6fdac39c1a`
+        `/everything?q=${query}&page=${page}&pageSize=${pageSize}&sortBy=publishedAt&apiKey=${process.env.EXPO_PUBLIC_API_KEY}`
     );
     return {
         ...response.data,
@@ -11,7 +11,7 @@ export async function getNewsByQuery(query: string, page = 1, pageSize = 10) {
 }
 export async function getNewsByCategory(query: string, page = 1, pageSize = 10) {
     const response = await api.get(
-        `/top-headlines?category=${query}&page=${page}&pageSize=${pageSize}&sortBy=publishedAt&apiKey=82c8808251bb49809961de6fdac39c1a`
+        `/top-headlines?category=${query}&page=${page}&pageSize=${pageSize}&sortBy=publishedAt&apiKey=${process.env.EXPO_PUBLIC_API_KEY}`
     );
     return {
         ...response.data,
