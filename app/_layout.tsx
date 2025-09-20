@@ -1,29 +1,36 @@
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { Tabs } from 'expo-router';
-import React from 'react';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { Stack } from "expo-router";
+import { StatusBar } from "react-native";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import "./global.css";
 
 
-export default function TabLayout() {
+export default function RootLayout() {
   const queryClient = new QueryClient();
+
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaView style={{ flex: 1 }}>
-        <Tabs
-          screenOptions={{
-            headerShown: false,
-          }}>
-          <Tabs.Screen
-            name="index"
-            options={{
-              title: 'Home',
-              tabBarIcon: ({ color }) => <MaterialIcons name="home" size={28} color={color} />,
-            }}
-          />
-        </Tabs>
-      </SafeAreaView>
-    </QueryClientProvider>
+      <SafeAreaProvider>
+        <SafeAreaView className="flex-1 bg-primary">
 
+          <StatusBar hidden={true} />
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{
+                headerShown: false,
+              }}
+            />
+            <Stack.Screen
+              name="details/[id]"
+              options={{
+                headerShown: false,
+              }}
+            />
+          </Stack>
+        </SafeAreaView>
+      </SafeAreaProvider>
+
+    </QueryClientProvider>
   );
 }

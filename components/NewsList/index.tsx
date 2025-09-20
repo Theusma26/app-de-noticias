@@ -5,7 +5,6 @@ import {
     ActivityIndicator,
     FlatList,
     Image,
-    StyleSheet,
     Text,
     TouchableOpacity,
     View,
@@ -40,7 +39,11 @@ export function NewsList({
     const router = useRouter();
 
     if (!articles || articles.length === 0) {
-        return <Text style={styles.noResultsText}>No news articles found.</Text>;
+        return (
+            <Text className="text-center text-base text-gray-500 mt-4">
+                No news articles found.
+            </Text>
+        );
     }
 
     return (
@@ -49,7 +52,8 @@ export function NewsList({
             keyExtractor={(item, index) => `${item.url}-${index}`}
             renderItem={({ item }) => {
                 return (
-                    <TouchableOpacity style={styles.articleContainer}
+                    <TouchableOpacity
+                        className="flex-row items-center p-4 my-2 bg-white rounded-lg "
                         onPress={() =>
                             router.push({
                                 pathname: `/details/[id]`,
@@ -61,25 +65,31 @@ export function NewsList({
                                     urlToImage: item.urlToImage,
                                     url: item.url,
                                 },
-                            })}
+                            })
+                        }
                     >
                         {item.urlToImage && (
-                            <Image source={{ uri: item.urlToImage }} style={styles.articleImage} />
+                            <Image
+                                source={{ uri: item.urlToImage }}
+                                className="w-20 h-20 rounded-lg mr-4"
+                            />
                         )}
-                        <View style={styles.textContainer}>
-                            <Text style={styles.articleTitle}>{item.title}</Text>
-                            <Text style={styles.articleDescription} numberOfLines={2}>
+                        <View className="flex-1">
+                            <Text className="text-base font-bold text-gray-800 mb-1">
+                                {item.title}
+                            </Text>
+                            <Text className="text-sm text-gray-600 mb-1" numberOfLines={2}>
                                 {item.description}
                             </Text>
 
-                            <View style={styles.metaContainer}>
+                            <View className="flex-row w-full justify-between items-center mt-1">
                                 {item.publishedAt && (
-                                    <Text style={styles.metaText}>
+                                    <Text className="text-xs text-gray-400">
                                         {format(parseISO(item.publishedAt), "dd/MM/yyyy")}
                                     </Text>
                                 )}
                                 {item.source?.name && (
-                                    <Text style={[styles.metaText, styles.sourceText]}>
+                                    <Text className="text-xs text-gray-400 italic ml-3">
                                         {item.source.name}
                                     </Text>
                                 )}
@@ -100,60 +110,3 @@ export function NewsList({
         />
     );
 }
-
-const styles = StyleSheet.create({
-    articleContainer: {
-        flexDirection: "row",
-        alignItems: "center",
-        padding: 16,
-        marginVertical: 8,
-        backgroundColor: "#fff",
-        borderRadius: 8,
-        shadowColor: "#000",
-        shadowOffset: { width: 0, height: 2 },
-        shadowOpacity: 0.2,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    articleImage: {
-        width: 80,
-        height: 80,
-        borderRadius: 8,
-        marginRight: 16,
-    },
-    textContainer: {
-        flex: 1,
-    },
-    articleTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: "#333",
-        marginBottom: 4,
-    },
-    articleDescription: {
-        fontSize: 14,
-        color: "#666",
-        marginBottom: 6,
-    },
-    noResultsText: {
-        textAlign: "center",
-        fontSize: 16,
-        color: "#666",
-        marginTop: 16,
-    },
-    metaContainer: {
-        flexDirection: "row",
-        width: "100%",
-        justifyContent: "space-between",
-        alignItems: "center",
-        marginTop: 4,
-    },
-    metaText: {
-        fontSize: 12,
-        color: "#999",
-    },
-    sourceText: {
-        marginLeft: 12,
-        fontStyle: "italic",
-    },
-});
