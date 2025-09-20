@@ -34,11 +34,19 @@ export default function TabLayout() {
                 }}
             />
             <Tabs.Screen
-                name="categories/index"
+                name="category"
                 options={{
                     title: 'Categorias',
                     headerShown: false,
                     tabBarIcon: ({ color }) => <MaterialIcons name="category" size={28} color={color} />,
+                }}
+            />
+            <Tabs.Screen
+                name="favorites"
+                options={{
+                    title: 'Favoritos',
+                    headerShown: false,
+                    tabBarIcon: ({ color }) => <MaterialIcons name="favorite-border" size={28} color={color} />,
                 }}
             />
         </Tabs>

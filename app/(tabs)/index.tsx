@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
 import { ActivityIndicator, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 
+import { Article } from "@/interfaces/articles";
 import { NewsList } from "../../components/NewsList";
 import { getNewsByQuery } from "../../service/newsService/news-service";
 
@@ -37,7 +38,7 @@ const Home = () => {
     setSearchQuery("");
   };
 
-  const articles = data?.pages.flatMap((page) => page.articles) || [];
+  const articles: Article[] = data?.pages.flatMap((page) => page.articles) || [];
 
   if (isLoading) {
     return (
