@@ -1,4 +1,5 @@
 import { format, parseISO } from "date-fns";
+import { useRouter } from "expo-router";
 import React from "react";
 import {
     ActivityIndicator,
@@ -20,6 +21,7 @@ interface Article {
         id: string | null;
         name: string;
     };
+    content?: string;
 }
 
 interface NewsListProps {
@@ -35,6 +37,8 @@ export function NewsList({
     hasNextPage,
     isFetchingNextPage,
 }: NewsListProps) {
+    const router = useRouter();
+
     if (!articles || articles.length === 0) {
         return <Text style={styles.noResultsText}>No news articles found.</Text>;
     }
@@ -45,7 +49,20 @@ export function NewsList({
             keyExtractor={(item, index) => `${item.url}-${index}`}
             renderItem={({ item }) => {
                 return (
-                    <TouchableOpacity style={styles.articleContainer}>
+                    <TouchableOpacity style={styles.articleContainer}
+                        onPress={() =>
+                            router.push({
+                                pathname: `/details/[id]`,
+                                params: {
+                                    id: item.url,
+                                    title: item.title,
+                                    description: item.description,
+                                    content: item.content,
+                                    urlToImage: item.urlToImage,
+                                    url: item.url,
+                                },
+                            })}
+                    >
                         {item.urlToImage && (
                             <Image source={{ uri: item.urlToImage }} style={styles.articleImage} />
                         )}

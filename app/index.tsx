@@ -18,7 +18,7 @@ const Home = () => {
     error,
   } = useInfiniteQuery({
     queryKey: ["everything", searchQuery],
-    queryFn: ({ pageParam = 1 }) => getNewsByQuery(searchQuery || "latest", pageParam, 10),
+    queryFn: ({ pageParam = 1 }) => getNewsByQuery(searchQuery || "animes", pageParam, 10),
     getNextPageParam: (lastPage) => {
       const totalPages = Math.ceil(lastPage.totalResults / 10);
       return lastPage.page < totalPages ? lastPage.page + 1 : undefined;
