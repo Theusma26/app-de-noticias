@@ -1,6 +1,6 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { ActivityIndicator, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { ActivityIndicator, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { NewsList } from "../../components/NewsList";
 import { getNewsByQuery } from "../../service/newsService/news-service";
@@ -29,6 +29,12 @@ const Home = () => {
 
   const handleSearch = () => {
     setSearchQuery(query);
+    setQuery("");
+    Keyboard.dismiss();
+  };
+
+  const handleResetSearch = () => {
+    setSearchQuery("");
   };
 
   const articles = data?.pages.flatMap((page) => page.articles) || [];
@@ -58,8 +64,9 @@ const Home = () => {
         Últimas notícias
       </Text>
 
-      <View className="flex-row mb-4">
+      <View className="flex-row mb-2">
         <TextInput
+          placeholderTextColor={"#151312"}
           className="flex-1 p-2 rounded-lg bg-white mr-2 border border-[#ccc]"
           placeholder="Search for news..."
           value={query}
@@ -72,6 +79,20 @@ const Home = () => {
           <Text className="text-dark-100 font-bold">Buscar</Text>
         </TouchableOpacity>
       </View>
+
+      {searchQuery.length > 0 && (
+        <View className="mb-4 flex-row flex-wrap items-center">
+          <View className="flex-row bg-light-100 px-3 py-1 rounded-full self-start items-center">
+            <Text className="text-dark-100 font-medium mr-2">{searchQuery}</Text>
+            <TouchableOpacity
+              onPress={handleResetSearch}
+              className="p-1  rounded-full"
+            >
+              <Text className="text-dark-100 font-bold">×</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
 
       <NewsList
         articles={articles}
