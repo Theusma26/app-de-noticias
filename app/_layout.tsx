@@ -2,6 +2,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { Stack } from "expo-router";
 import { StatusBar } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
+import Toast from 'react-native-toast-message';
 import "./global.css";
 
 
@@ -36,7 +37,7 @@ export default function RootLayout() {
           </Stack>
         </SafeAreaView>
       </SafeAreaProvider>
-
+      <Toast />
     </QueryClientProvider>
   );
 }

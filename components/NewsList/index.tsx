@@ -1,3 +1,4 @@
+import { Article } from "@/interfaces/articles";
 import { format, parseISO } from "date-fns";
 import { useRouter } from "expo-router";
 import React from "react";
@@ -10,18 +11,6 @@ import {
     View,
 } from "react-native";
 
-interface Article {
-    url: string;
-    urlToImage?: string;
-    title: string;
-    description?: string;
-    publishedAt?: string;
-    source?: {
-        id: string | null;
-        name: string;
-    };
-    content?: string;
-}
 
 interface NewsListProps {
     articles: Article[];

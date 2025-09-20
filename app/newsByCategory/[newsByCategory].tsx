@@ -2,6 +2,7 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
+import { Article } from "@/interfaces/articles";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { NewsList } from "../../components/NewsList";
@@ -28,7 +29,7 @@ const NewsByCategory = () => {
         initialPageParam: 1,
         enabled: !!newsByCategory,
     });
-    const articles = data?.pages.flatMap((page) => page.articles) || [];
+    const articles: Article[] = data?.pages.flatMap((page) => page.articles) || [];
     if (isLoading) {
         return (
             <View className="flex-1 justify-center items-center bg-primary">
