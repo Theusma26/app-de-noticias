@@ -2,15 +2,19 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
 import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
 
+import { useNetwork } from "@/context/NetworkContext";
 import { Article } from "@/interfaces/articles";
+import { getOffline, saveOffline } from "@/utils/modo-offline/offline-mode.utils";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { NewsList } from "../../components/NewsList";
-import { getNewsByQuery } from "../../service/newsService/news-service";
+import { getNewsByCategory } from "../../service/newsService/news-service";
 
 const NewsByCategory = () => {
     const { newsByCategory } = useLocalSearchParams<{ newsByCategory: string }>();
     const router = useRouter();
+    const { isConnected } = useNetwork();
+
     const {
         data,
         fetchNextPage,
@@ -20,8 +24,19 @@ const NewsByCategory = () => {
         error,
     } = useInfiniteQuery({
         queryKey: ["newsByCategory", newsByCategory],
-        queryFn: ({ pageParam = 1 }) =>
-            getNewsByQuery(newsByCategory, pageParam, 10),
+        queryFn: async ({ pageParam = 1 }) => {
+            if (!isConnected) {
+                return {
+                    page: 1,
+                    totalResults: 0,
+                    articles: await getOffline(),
+                };
+            }
+            const response = await getNewsByCategory(newsByCategory, pageParam, 10);
+            if (pageParam === 1) await saveOffline(response.articles);
+
+            return response;
+        },
         getNextPageParam: (lastPage) => {
             const totalPages = Math.ceil(lastPage.totalResults / 10);
             return lastPage.page < totalPages ? lastPage.page + 1 : undefined;
@@ -51,6 +66,13 @@ const NewsByCategory = () => {
 
     return (
         <View className="flex-1 p-4 bg-primary">
+            {!isConnected && (
+                <View className="bg-yellow-500 p-2 mb-4 rounded">
+                    <Text className="text-center text-black font-medium">
+                        Você está offline. Mostrando notícias armazenadas.
+                    </Text>
+                </View>
+            )}
             <View className="flex-row items-center mb-4">
                 <TouchableOpacity
                     onPress={() => router.back()}
