@@ -1,11 +1,25 @@
+import { format, parseISO } from "date-fns";
 import React from "react";
-import { ActivityIndicator, FlatList, Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+    ActivityIndicator,
+    FlatList,
+    Image,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
+} from "react-native";
 
 interface Article {
     url: string;
     urlToImage?: string;
     title: string;
     description?: string;
+    publishedAt?: string;
+    source?: {
+        id: string | null;
+        name: string;
+    };
 }
 
 interface NewsListProps {
@@ -29,28 +43,46 @@ export function NewsList({
         <FlatList
             data={articles}
             keyExtractor={(item, index) => `${item.url}-${index}`}
-            renderItem={({ item }) => (
-                <TouchableOpacity style={styles.articleContainer}>
-                    {item.urlToImage && <Image source={{ uri: item.urlToImage }} style={styles.articleImage} />}
-                    <View style={styles.textContainer}>
-                        <Text style={styles.articleTitle}>{item.title}</Text>
-                        <Text style={styles.articleDescription} numberOfLines={2}>
-                            {item.description}
-                        </Text>
-                    </View>
-                </TouchableOpacity>
-            )}
+            renderItem={({ item }) => {
+                return (
+                    <TouchableOpacity style={styles.articleContainer}>
+                        {item.urlToImage && (
+                            <Image source={{ uri: item.urlToImage }} style={styles.articleImage} />
+                        )}
+                        <View style={styles.textContainer}>
+                            <Text style={styles.articleTitle}>{item.title}</Text>
+                            <Text style={styles.articleDescription} numberOfLines={2}>
+                                {item.description}
+                            </Text>
+
+                            <View style={styles.metaContainer}>
+                                {item.publishedAt && (
+                                    <Text style={styles.metaText}>
+                                        {format(parseISO(item.publishedAt), "dd/MM/yyyy")}
+                                    </Text>
+                                )}
+                                {item.source?.name && (
+                                    <Text style={[styles.metaText, styles.sourceText]}>
+                                        {item.source.name}
+                                    </Text>
+                                )}
+                            </View>
+                        </View>
+                    </TouchableOpacity>
+                );
+            }}
             onEndReached={() => {
                 if (hasNextPage) fetchNextPage();
             }}
             onEndReachedThreshold={0.5}
             ListFooterComponent={() =>
-                isFetchingNextPage ? <ActivityIndicator size="small" color="#4c669f" /> : null
+                isFetchingNextPage ? (
+                    <ActivityIndicator size="small" color="#4c669f" />
+                ) : null
             }
         />
     );
-};
-
+}
 
 const styles = StyleSheet.create({
     articleContainer: {
@@ -84,11 +116,27 @@ const styles = StyleSheet.create({
     articleDescription: {
         fontSize: 14,
         color: "#666",
+        marginBottom: 6,
     },
     noResultsText: {
         textAlign: "center",
         fontSize: 16,
         color: "#666",
         marginTop: 16,
+    },
+    metaContainer: {
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignItems: "center",
+        marginTop: 4,
+    },
+    metaText: {
+        fontSize: 12,
+        color: "#999",
+    },
+    sourceText: {
+        marginLeft: 12,
+        fontStyle: "italic",
     },
 });

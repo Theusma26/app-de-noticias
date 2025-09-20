@@ -31,7 +31,6 @@ const Home = () => {
   };
 
   const articles = data?.pages.flatMap(page => page.articles) || [];
-
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -51,7 +50,7 @@ const Home = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Latest News</Text>
+      <Text style={styles.title}>Últimas notícias</Text>
       <View style={styles.searchContainer}>
         <TextInput
           style={styles.searchInput}
@@ -60,7 +59,7 @@ const Home = () => {
           onChangeText={setQuery}
         />
         <TouchableOpacity style={styles.searchButton} onPress={handleSearch}>
-          <Text style={styles.searchButtonText}>Search</Text>
+          <Text style={styles.searchButtonText}>Buscar</Text>
         </TouchableOpacity>
       </View>
 
