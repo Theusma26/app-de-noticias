@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React, { useState } from "react";
-import { ActivityIndicator, Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
+import { Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 
+import { ErrorScreen } from "@/components/ErrorScreen";
+import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
 import { Article } from "@/interfaces/articles";
 import { getOffline, saveOffline } from "@/utils/modo-offline/offline-mode.utils";
@@ -20,6 +22,7 @@ const Home = () => {
     isFetchingNextPage,
     isLoading,
     error,
+    refetch
   } = useInfiniteQuery({
     queryKey: ["everything", searchQuery],
     queryFn: async ({ pageParam = 1 }) => {
@@ -56,20 +59,16 @@ const Home = () => {
 
   if (isLoading) {
     return (
-      <View className="flex-1 justify-center items-center bg-primary">
-        <ActivityIndicator size="large" color="#4c669f" />
-        <Text className="mt-2 text-base text-[#4c669f]">Loading news...</Text>
-      </View>
+      <Loading />
     );
   }
 
   if (error) {
     return (
-      <View className="flex-1 justify-center items-center p-4">
-        <Text className="text-base text-[#d9534f] text-center">
-          {`Error: ${error.message}`}
-        </Text>
-      </View>
+      <ErrorScreen
+        message={error instanceof Error ? error.message : "Erro inesperado"}
+        onRetry={refetch}
+      />
     );
   }
 
@@ -91,7 +90,7 @@ const Home = () => {
         <TextInput
           placeholderTextColor={"#151312"}
           className="flex-1 p-2 rounded-lg bg-white mr-2 border border-[#ccc]"
-          placeholder="Search for news..."
+          placeholder="Pesquise por notícias..."
           value={query}
           onChangeText={setQuery}
         />

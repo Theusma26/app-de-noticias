@@ -1,7 +1,9 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import React from "react";
-import { ActivityIndicator, Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 
+import { ErrorScreen } from "@/components/ErrorScreen";
+import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
 import { Article } from "@/interfaces/articles";
 import { getOffline, saveOffline } from "@/utils/modo-offline/offline-mode.utils";
@@ -22,6 +24,7 @@ const NewsByCategory = () => {
         isFetchingNextPage,
         isLoading,
         error,
+        refetch
     } = useInfiniteQuery({
         queryKey: ["newsByCategory", newsByCategory],
         queryFn: async ({ pageParam = 1 }) => {
@@ -45,22 +48,19 @@ const NewsByCategory = () => {
         enabled: !!newsByCategory,
     });
     const articles: Article[] = data?.pages.flatMap((page) => page.articles) || [];
+
     if (isLoading) {
         return (
-            <View className="flex-1 justify-center items-center bg-primary">
-                <ActivityIndicator size="large" color="#4c669f" />
-                <Text className="mt-2 text-base text-[#4c669f]">Loading news...</Text>
-            </View>
+            <Loading />
         );
     }
 
     if (error) {
         return (
-            <View className="flex-1 justify-center items-center p-4">
-                <Text className="text-base text-[#d9534f] text-center">
-                    {`Error: ${error.message}`}
-                </Text>
-            </View>
+            <ErrorScreen
+                message={error instanceof Error ? error.message : "Erro inesperado"}
+                onRetry={refetch}
+            />
         );
     }
 
