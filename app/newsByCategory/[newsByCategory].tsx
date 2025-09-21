@@ -1,11 +1,13 @@
+import React from "react";
+import { useLocalSearchParams, useRouter } from "expo-router";
+import { Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { OfflineBanner } from "@/components/OfflineBanner";
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
 import { useNewsQuery } from "@/hooks/useNewsQuery";
-import { MaterialIcons } from "@expo/vector-icons";
-import { useLocalSearchParams, useRouter } from "expo-router";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
 import { NewsList } from "../../components/NewsList";
 import { getNewsByCategory } from "../../service/news-service";
 
@@ -39,11 +41,7 @@ const NewsByCategory = () => {
     return (
         <View className="flex-1 p-4 bg-primary">
             {!isConnected && (
-                <View className="bg-yellow-500 p-2 mb-4 rounded">
-                    <Text className="text-center text-black font-medium">
-                        Você está offline. Mostrando notícias armazenadas.
-                    </Text>
-                </View>
+                <OfflineBanner />
             )}
             <View className="flex-row items-center mb-4">
                 <TouchableOpacity onPress={() => router.back()} className="p-2">
