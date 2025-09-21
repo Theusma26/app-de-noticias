@@ -1,14 +1,11 @@
-import { useInfiniteQuery } from "@tanstack/react-query";
-import React from "react";
-import { Text, TouchableOpacity, View } from "react-native";
-
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
-import { Article } from "@/interfaces/articles";
-import { getOffline, saveOffline } from "@/utils/modo-offline/offline-mode.utils";
+import { useNewsQuery } from "@/hooks/useNewsQuery";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useLocalSearchParams, useRouter } from "expo-router";
+import React from "react";
+import { Text, TouchableOpacity, View } from "react-native";
 import { NewsList } from "../../components/NewsList";
 import { getNewsByCategory } from "../../service/newsService/news-service";
 
@@ -24,45 +21,20 @@ const NewsByCategory = () => {
         isFetchingNextPage,
         isLoading,
         error,
-        refetch
-    } = useInfiniteQuery({
-        queryKey: ["newsByCategory", newsByCategory],
-        queryFn: async ({ pageParam = 1 }) => {
-            if (!isConnected) {
-                return {
-                    page: 1,
-                    totalResults: 0,
-                    articles: await getOffline(),
-                };
-            }
-            const response = await getNewsByCategory(newsByCategory, pageParam, 10);
-            if (pageParam === 1) await saveOffline(response.articles);
-
-            return response;
-        },
-        getNextPageParam: (lastPage) => {
-            const totalPages = Math.ceil(lastPage.totalResults / 10);
-            return lastPage.page < totalPages ? lastPage.page + 1 : undefined;
-        },
-        initialPageParam: 1,
-        enabled: !!newsByCategory,
+        refetch,
+    } = useNewsQuery({
+        endpoint: getNewsByCategory,
+        param: newsByCategory,
+        isConnected,
+        storageKey: `@news_${newsByCategory}`,
     });
-    const articles: Article[] = data?.pages.flatMap((page) => page.articles) || [];
 
-    if (isLoading) {
-        return (
-            <Loading />
-        );
-    }
+    const articles = data?.pages.flatMap((page) => page.articles) || [];
 
-    if (error) {
-        return (
-            <ErrorScreen
-                message={error instanceof Error ? error.message : "Erro inesperado"}
-                onRetry={refetch}
-            />
-        );
-    }
+    if (isLoading) return <Loading />;
+
+    if (error)
+        return <ErrorScreen message={error instanceof Error ? error.message : "Erro inesperado"} onRetry={refetch} />;
 
     return (
         <View className="flex-1 p-4 bg-primary">
@@ -74,10 +46,7 @@ const NewsByCategory = () => {
                 </View>
             )}
             <View className="flex-row items-center mb-4">
-                <TouchableOpacity
-                    onPress={() => router.back()}
-                    className="p-2"
-                >
+                <TouchableOpacity onPress={() => router.back()} className="p-2">
                     <MaterialIcons name="arrow-back" size={28} color="#D6C7FF" />
                 </TouchableOpacity>
                 <Text className="flex-1 text-center text-2xl font-bold text-light-100">
