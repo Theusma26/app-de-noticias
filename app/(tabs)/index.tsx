@@ -5,7 +5,7 @@ import { ErrorScreen } from "@/components/ErrorScreen";
 import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
 import { useNewsQuery } from "@/hooks/useNewsQuery";
-import { getNewsByQuery } from "@/service/newsService/news-service";
+import { getNewsByQuery } from "@/service/news-service";
 import { NewsList } from "../../components/NewsList";
 
 const Home = () => {

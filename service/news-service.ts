@@ -1,4 +1,4 @@
-import api from "../baseService/api";
+import api from "./api";
 
 export async function getNewsByQuery(query: string, page = 1, pageSize = 10) {
     const response = await api.get(

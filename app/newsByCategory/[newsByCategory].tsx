@@ -7,7 +7,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import React from "react";
 import { Text, TouchableOpacity, View } from "react-native";
 import { NewsList } from "../../components/NewsList";
-import { getNewsByCategory } from "../../service/newsService/news-service";
+import { getNewsByCategory } from "../../service/news-service";
 
 const NewsByCategory = () => {
     const { newsByCategory } = useLocalSearchParams<{ newsByCategory: string }>();
