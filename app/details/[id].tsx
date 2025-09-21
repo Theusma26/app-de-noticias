@@ -1,9 +1,9 @@
-import { useFavoritesQuery } from "@/hooks/useFavoritesQuery";
-import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { ExternalPathString, Link, router, useLocalSearchParams } from "expo-router";
-import React from "react";
 import { Image, ScrollView, Text, TouchableOpacity, View } from "react-native";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import React from "react";
 import Toast from "react-native-toast-message";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const NewsDetails = () => {
   const { title, content, urlToImage, description, url } =
@@ -15,7 +15,7 @@ const NewsDetails = () => {
       url: string;
     }>();
 
-  const { favorites, addFavorite, removeFavorite } = useFavoritesQuery();
+  const { favorites, addFavorite, removeFavorite } = useFavorites();
 
   const isFavorite = url ? favorites.some((f) => f.url === url) : false;
 

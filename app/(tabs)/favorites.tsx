@@ -1,10 +1,11 @@
-import { useFavoritesQuery } from "@/hooks/useFavoritesQuery";
 import React from "react";
 import { Text, View } from "react-native";
-import { NewsList } from "../../components/NewsList";
+
+import { NewsList } from "@/components/NewsList";
+import { useFavorites } from "@/context/FavoritesContext";
 
 const Favorites = () => {
-    const { favorites, isLoading } = useFavoritesQuery();
+    const { favorites, isLoading } = useFavorites();
 
     return (
         <View className="flex-1 p-4 bg-primary">
