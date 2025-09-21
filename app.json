@@ -8,7 +8,7 @@
       "android"
     ],
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/newsappicon.png",
     "scheme": "newsapp",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -31,14 +31,14 @@
     "web": {
       "output": "static",
       "bundler": "metro",
-      "favicon": "./assets/images/icon.png"
+      "favicon": "./assets/images/newsappicon.png"
     },
     "plugins": [
       "expo-router",
       [
         "expo-splash-screen",
         {
-          "image": "./assets/images/icon.png",
+          "image": "./assets/images/newsappicon.png",
           "imageWidth": 200,
           "resizeMode": "contain",
           "backgroundColor": "#ffffff",
