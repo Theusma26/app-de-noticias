@@ -80,15 +80,21 @@ Abra o aplicativo Expo Go no seu celular e escaneie o QR code para visualizar o 
 
 ## Decisões Técnicas
 
-- **TypeScript:** Adotado para adicionar tipagem estática ao projeto, melhorando a detecção de erros em tempo de desenvolvimento e qualidade.
+Neste projeto, busquei aplicar boas práticas e padrões de projeto sempre que possível. Para isso:
 
-- **NativeWind:** Usado para facilitar a estilização e agilizar o desenvolvimento, aproveitando minha familiaridade com Tailwind CSS.
+- Criei **componentes reutilizáveis** para telas de erro, loading e listas.  
+- Utilizei **Context** para monitorar a conexão com a internet, permitindo que essa informação seja acessada de forma centralizada em qualquer parte da aplicação.  
+- Adotei **enums** para valores fixos, evitando comparações diretas com strings.  
+- Desenvolvi **hooks personalizados** com o objetivo de facilitar e padronizar a manipulação e o consumo de dados.  
+- Usei **interfaces TypeScript** para garantir tipagem consistente dos dados.  
+- Implementei **mock data** para criar a lista de categorias.  
+- Organizei o projeto em pastas como **service**, para integração com a NewsAPI, e **utils**, para reutilização de funções e lógicas comuns.  
+- Protegi dados sensíveis utilizando o arquivo **.env**.  
+- Adotei o **NativeWind** para tornar a estilização mais ágil e moderna.  
+- Busquei deixar o **layout com aparência moderna**, combinando funcionalidade e design clean.
 
-- **React Query (TanStack):** Usado para gerenciar o estado assíncrono, escolhi essa biblioteca para implementar o infinite scroll e ajudar a gerenciar os dados que foram salvos no AsyncStorage.
 
-- **Axios:** Escolhido como cliente HTTP para facilitar requisições à News API, incluindo suporte a interceptors e tratamento de erros.
 
-- **News API:** Decidido como fonte de dados por fornecer acesso a notícias em tempo real de diversas fontes confiáveis, simples de integrar e com suporte a filtragem por categorias e pesquisa por palavras-chave.
 
 ## Autor
 
