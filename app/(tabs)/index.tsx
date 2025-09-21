@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { ErrorScreen } from "@/components/ErrorScreen";
@@ -6,11 +6,12 @@ import { Loading } from "@/components/Loading";
 import { useNetwork } from "@/context/NetworkContext";
 import { useNewsQuery } from "@/hooks/useNewsQuery";
 import { getNewsByQuery } from "@/service/news-service";
-import { NewsList } from "../../components/NewsList";
+import { NewsList } from "@/components/NewsList";
+import { OfflineBanner } from "@/components/OfflineBanner";
 
 const Home = () => {
   const [query, setQuery] = useState("");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [activeQuery, setActiveQuery] = useState("");
   const { isConnected } = useNetwork();
 
   const {
@@ -23,20 +24,23 @@ const Home = () => {
     refetch,
   } = useNewsQuery({
     endpoint: getNewsByQuery,
-    param: searchQuery || 'animes',
+    param: activeQuery || "animes",
     isConnected,
     storageKey: "@news_search",
   });
 
-  const handleSearch = () => {
-    setSearchQuery(query);
+  const handleSearch = useCallback(() => {
+    const trimmed = query.trim();
+    if (!trimmed) return;
+    setActiveQuery(trimmed);
     setQuery("");
     Keyboard.dismiss();
-  };
+  }, [query]);
 
-  const handleResetSearch = () => {
-    setSearchQuery("");
-  };
+  const handleResetSearch = useCallback(() => {
+    setActiveQuery("");
+    refetch();
+  }, [refetch]);
 
   const articles = data?.pages.flatMap((page) => page.articles) || [];
 
@@ -53,13 +57,7 @@ const Home = () => {
 
   return (
     <View className="flex-1 p-4 bg-primary">
-      {!isConnected && (
-        <View className="bg-yellow-500 p-2 mb-4 rounded">
-          <Text className="text-center text-black font-medium">
-            Você está offline. Mostrando notícias armazenadas.
-          </Text>
-        </View>
-      )}
+      {!isConnected && <OfflineBanner />}
 
       <Text className="text-2xl font-bold mb-4 text-center text-light-100">
         Últimas notícias
@@ -81,10 +79,10 @@ const Home = () => {
         </TouchableOpacity>
       </View>
 
-      {searchQuery.length > 0 && (
+      {activeQuery.length > 0 && (
         <View className="mb-4 flex-row flex-wrap items-center">
           <View className="flex-row bg-light-100 px-3 py-1 rounded-full self-start items-center">
-            <Text className="text-dark-100 font-medium mr-2">{searchQuery}</Text>
+            <Text className="text-dark-100 font-medium mr-2">{query}</Text>
             <TouchableOpacity onPress={handleResetSearch} className="p-1 rounded-full">
               <Text className="text-dark-100 font-bold">×</Text>
             </TouchableOpacity>
