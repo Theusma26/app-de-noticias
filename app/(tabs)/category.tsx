@@ -1,8 +1,9 @@
-import { categories } from "@/mocks/category";
-import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
 import { FlatList, Text, TouchableOpacity, View } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+
+import { categories } from "@/mocks/category";
 
 const Categories = () => {
     const router = useRouter();
