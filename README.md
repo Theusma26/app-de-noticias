@@ -17,8 +17,8 @@
 - **[Expo](https://expo.dev/):** Plataforma open-source para construir aplicativos nativos universais (Android, iOS e web) usando JavaScript/TypeScript e React Native. Possui roteamento baseado em arquivos via Expo Router, atualização rápida (fast refresh), módulos nativos para câmera, mapas e notificações, atualizações over-the-air (EAS) e deploy simplificado de aplicativos.
 
 - **[Axios](https://axios-http.com/):** Cliente HTTP para realizar requisições às APIs.
-
-- **[React Navigation](https://reactnavigation.org/):** Biblioteca para navegação entre telas.
+  
+- **[Expo Router](https://expo.github.io/router/docs/):** Sistema de roteamento baseado em arquivos para apps React Native, que simplifica a navegação ao seguir a estrutura de pastas do projeto. Ele é construído sobre o React Navigation, mas elimina a necessidade de configuração manual de stacks, tabs e drawers, tornando a organização e manutenção das rotas mais intuitiva.
 
 - **[NativeWind](https://www.nativewind.dev/):** Biblioteca que leva o Tailwind CSS para React Native e Expo, permitindo estilizar componentes móveis usando classes utilitárias, promovendo design rápido, consistente e responsivo.
 
