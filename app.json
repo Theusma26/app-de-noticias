@@ -2,7 +2,7 @@
   "expo": {
     "name": "news-app",
     "slug": "news-app",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "platforms": [
       "ios",
       "android"
@@ -20,7 +20,7 @@
       }
     },
     "android": {
-      "versionCode": 2,
+      "versionCode": 3,
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE"
       },

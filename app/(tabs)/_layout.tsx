@@ -1,6 +1,7 @@
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Platform } from 'react-native';
 
 
 export default function TabLayout() {
@@ -17,8 +18,9 @@ export default function TabLayout() {
                     backgroundColor: "#0F0D23",
                     borderRadius: 50,
                     marginHorizontal: 20,
+                    paddingTop: Platform.OS === 'ios' ? 0 : 10,
                     marginBottom: 36,
-                    height: 58,
+                    height: Platform.OS === 'ios' ? 58 : 82,
                     position: "absolute",
                     overflow: "hidden",
                     borderWidth: 1,
