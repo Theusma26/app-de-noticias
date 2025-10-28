@@ -1,7 +1,8 @@
-import React, { useCallback } from "react";
-import { FlatList, Text, ActivityIndicator, View } from "react-native";
 import { Article } from "@/interfaces/articles";
 import { useRouter } from "expo-router";
+import React, { useCallback } from "react";
+import { ActivityIndicator, FlatList, Text, View } from "react-native";
+import { Loading } from "../Loading";
 import NewsItem from "./NewsItem";
 
 interface NewsListProps {
@@ -9,20 +10,22 @@ interface NewsListProps {
     fetchNextPage: () => void;
     hasNextPage?: boolean;
     isFetchingNextPage?: boolean;
+    isLoading?: boolean;
 }
 
-export function NewsList({
+export const NewsList = React.memo(function NewsList({
     articles,
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
+    isLoading,
 }: NewsListProps) {
     const router = useRouter();
 
     const handlePress = useCallback(
         (item: Article) => {
             router.push({
-                pathname: `/details/[id]`,
+                pathname: "/details/[id]",
                 params: {
                     id: item.url,
                     title: item.title,
@@ -36,7 +39,19 @@ export function NewsList({
         [router]
     );
 
-    if (!articles || articles.length === 0) {
+    const handleEndReached = useCallback(() => {
+        if (hasNextPage && !isFetchingNextPage) {
+            fetchNextPage();
+        }
+    }, [hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+    if (isLoading) {
+        return (
+            <Loading />
+        );
+    }
+
+    if (!articles?.length) {
         return (
             <Text className="text-center text-base text-gray-500 mt-4">
                 Nenhuma notícia encontrada.
@@ -48,12 +63,12 @@ export function NewsList({
         <FlatList
             data={articles}
             keyExtractor={(item, index) => `${item.url}-${index}`}
-            renderItem={({ item }) => <NewsItem item={item} onPress={() => handlePress(item)} />}
-            onEndReached={() => {
-                if (hasNextPage && !isFetchingNextPage) fetchNextPage();
-            }}
+            renderItem={({ item }) => (
+                <NewsItem item={item} onPress={() => handlePress(item)} />
+            )}
+            onEndReached={handleEndReached}
             onEndReachedThreshold={0.5}
-            ListFooterComponent={() =>
+            ListFooterComponent={
                 isFetchingNextPage ? (
                     <View className="py-4">
                         <ActivityIndicator size="small" color="#4c669f" />
@@ -62,4 +77,4 @@ export function NewsList({
             }
         />
     );
-}
+});

@@ -9,7 +9,6 @@ interface NewsQueryResponse {
 }
 
 interface QueryFnParams {
-    pageParam?: number;
     endpoint: (param: string, page: number, pageSize: number) => Promise<NewsQueryResponse>;
     param: string;
     pageSize?: number;

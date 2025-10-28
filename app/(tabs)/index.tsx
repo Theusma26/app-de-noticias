@@ -1,13 +1,13 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback, useState } from "react";
 import { Keyboard, Text, TextInput, TouchableOpacity, View } from "react-native";
 
 import { ErrorScreen } from "@/components/ErrorScreen";
 import { Loading } from "@/components/Loading";
+import { NewsList } from "@/components/NewsList";
+import { OfflineBanner } from "@/components/OfflineBanner";
 import { useNetwork } from "@/context/NetworkContext";
 import { useNewsQuery } from "@/hooks/useNewsQuery";
 import { getNewsByQuery } from "@/service/news-service";
-import { NewsList } from "@/components/NewsList";
-import { OfflineBanner } from "@/components/OfflineBanner";
 
 const Home = () => {
   const [query, setQuery] = useState("");
@@ -82,7 +82,7 @@ const Home = () => {
       {activeQuery.length > 0 && (
         <View className="mb-4 flex-row flex-wrap items-center">
           <View className="flex-row bg-light-100 px-3 py-1 rounded-full self-start items-center">
-            <Text className="text-dark-100 font-medium mr-2">{query}</Text>
+            <Text className="text-dark-100 font-medium mr-2">{activeQuery}</Text>
             <TouchableOpacity onPress={handleResetSearch} className="p-1 rounded-full">
               <Text className="text-dark-100 font-bold">×</Text>
             </TouchableOpacity>
